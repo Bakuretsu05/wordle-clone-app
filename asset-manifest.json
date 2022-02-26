@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/wordle-clone-app/static/js/main.585d2f7d.js",
+    "index.html": "/wordle-clone-app/index.html",
+    "main.585d2f7d.js.map": "/wordle-clone-app/static/js/main.585d2f7d.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.585d2f7d.js"
+  ]
+}
