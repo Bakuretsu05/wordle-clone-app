@@ -3,8 +3,8 @@ import { ColorType } from "../../../../App";
 
 export const StyledBox = styled.div<{ color: ColorType }>`
   padding: 1rem;
-  width: 4.5rem;
-  height: 4.5rem;
+  width: 4rem;
+  height: 4rem;
   font-weight: 700;
   font-size: 2.2rem;
   color: ${({ theme }) => theme.textColor.primary};
