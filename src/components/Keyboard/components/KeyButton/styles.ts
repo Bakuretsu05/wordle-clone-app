@@ -1,3 +1,3 @@
 import styled from "styled-components";
 
-export const KeyButton = styled.div``;
+export const KeyButton = styled.button``;

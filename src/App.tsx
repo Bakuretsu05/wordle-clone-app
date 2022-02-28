@@ -5,6 +5,8 @@ import { ThemeProvider } from "styled-components";
 import { Container, GlobalStyles, defaultTheme } from "./globalStyles";
 import Wordle from "./components/Wordle";
 import EndScreen from "./components/EndScreen";
+import Keyboard from "./components/Keyboard";
+import { KeysType } from "./components/Keyboard/types";
 
 export const LS_KEY = "bakurdleStats";
 
@@ -108,8 +110,25 @@ const App: React.FC = () => {
     } else if (e.key === "Enter") handleSubmit();
   };
 
-  const handleDelete = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Backspace") setInput((currInput) => currInput.slice(0, -1));
+  const handleDelete = (
+    e: React.KeyboardEvent<HTMLDivElement> | "DISPATCH"
+  ) => {
+    if (typeof e === "object" && !(e.key === "Backspace")) return;
+    else if (typeof e !== "object" && !(e === "DISPATCH")) return;
+    setInput((currInput) => currInput.slice(0, -1));
+  };
+
+  const handleKeyboard = (value: KeysType) => {
+    if (value === "ENTER") handleSubmit();
+    else if (value === "BACKSPACE") handleDelete("DISPATCH");
+    else {
+      setInput((currInput) => {
+        if (currInput.length < 6) {
+          return (currInput + value).toUpperCase();
+        }
+        return currInput;
+      });
+    }
   };
 
   const handleSubmit = () => {
@@ -188,12 +207,12 @@ const App: React.FC = () => {
             handleNewGame={handleNewGame}
             handleShare={handleShare}
           />
+        ) : isPlaying ? (
+          <Keyboard handlePress={handleKeyboard} />
         ) : (
-          !isPlaying && (
-            <StyledButton onClick={() => setShowEndScreen(true)}>
-              Show End Screen
-            </StyledButton>
-          )
+          <StyledButton onClick={() => setShowEndScreen(true)}>
+            Show End Screen
+          </StyledButton>
         )}
       </Container>
     </ThemeProvider>
