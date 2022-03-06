@@ -8,13 +8,14 @@ import EndScreen from "./components/EndScreen";
 import Keyboard from "./components/Keyboard";
 import { KeysType } from "./components/Keyboard/types";
 import useWordle from "./hooks/useWordle";
+import useInput from "./hooks/useInput";
 
 export const LS_KEY = "bakurdleStats";
 
 const App: React.FC = () => {
-  const [input, setInput] = useState("");
   const [isPlaying, setIsPlaying] = useState(true);
   const [showEndScreen, setShowEndScreen] = useState(false);
+  const { inputAdd, inputBackspace, inputDelete, input } = useInput();
   const { wordles, submitWordle, currentRow, resetWordle, word } = useWordle({
     wordlist: wordlist,
   });
@@ -22,18 +23,12 @@ const App: React.FC = () => {
   const handleSubmit = () => {
     if (input.length !== 6 || !wordlist.includes(input.toLowerCase())) return;
     submitWordle(input);
-    setInput("");
+    inputDelete();
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (/^[a-zA-Z]{1}$/.test(e.key)) {
-      setInput((currInput) => {
-        if (currInput.length < 6) {
-          return (currInput + e.key).toUpperCase();
-        }
-        return currInput;
-      });
-    } else if (e.key === "Enter") handleSubmit();
+    if (/^[a-zA-Z]{1}$/.test(e.key)) inputAdd(e.key);
+    else if (e.key === "Enter") handleSubmit();
   };
 
   const handleDelete = (
@@ -41,25 +36,18 @@ const App: React.FC = () => {
   ) => {
     if (typeof e === "object" && !(e.key === "Backspace")) return;
     else if (typeof e !== "object" && !(e === "DISPATCH")) return;
-    setInput((currInput) => currInput.slice(0, -1));
+    inputBackspace();
   };
 
   const handleKeyboard = (value: KeysType) => {
     if (value === "ENTER") handleSubmit();
-    else if (value === "BACKSPACE") handleDelete("DISPATCH");
-    else {
-      setInput((currInput) => {
-        if (currInput.length < 6) {
-          return (currInput + value).toUpperCase();
-        }
-        return currInput;
-      });
-    }
+    else if (value === "BACKSPACE") inputBackspace();
+    else inputAdd(value);
   };
 
   const handleNewGame = () => {
     resetWordle();
-    setInput("");
+    inputDelete();
     setShowEndScreen(false);
     setIsPlaying(true);
   };

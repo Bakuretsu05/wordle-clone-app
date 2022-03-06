@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 export type ColorType = "none" | "yellow" | "green" | "gray";
 
