@@ -1,6 +1,6 @@
 import React from "react";
 import { StyledBox } from "./styles";
-import { ColorType } from "../../../../App";
+import { ColorType } from "../../../../hooks/useWordle";
 
 interface PropsType {
   letter: string;

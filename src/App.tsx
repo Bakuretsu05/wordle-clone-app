@@ -7,97 +7,23 @@ import Wordle from "./components/Wordle";
 import EndScreen from "./components/EndScreen";
 import Keyboard from "./components/Keyboard";
 import { KeysType } from "./components/Keyboard/types";
+import useWordle from "./hooks/useWordle";
 
 export const LS_KEY = "bakurdleStats";
 
-export type ColorType = "none" | "yellow" | "green" | "gray";
-
-export interface WordleType {
-  letter: string;
-  color: ColorType;
-}
-
-const defaultWordles: WordleType[][] = [
-  [
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-  ],
-  [
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-  ],
-  [
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-  ],
-  [
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-  ],
-  [
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-  ],
-  [
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-    { letter: "", color: "none" },
-  ],
-];
-
-const formatWordle = (input: string, word: string): WordleType[] => {
-  const newWordle: WordleType[] = [];
-  let noYellow = word;
-  for (let i = 0; i < input.length; i++) {
-    if (word.includes(input[i])) {
-      if (input[i] === word[i]) {
-        word = word.replace(input[i], "#");
-        newWordle.push({ letter: input[i], color: "green" });
-      } else if (noYellow.includes(input[i])) {
-        noYellow = noYellow.replace(input[i], "#");
-        newWordle.push({ letter: input[i], color: "yellow" });
-      } else {
-        newWordle.push({ letter: input[i], color: "gray" });
-      }
-    } else {
-      newWordle.push({ letter: input[i], color: "gray" });
-    }
-  }
-  return newWordle;
-};
-
 const App: React.FC = () => {
-  const [word, setWord] = useState(() => {
-    return wordlist[Math.floor(Math.random() * wordlist.length)].toUpperCase();
-  });
-  const [wordles, setWordles] = useState<WordleType[][]>(defaultWordles);
   const [input, setInput] = useState("");
-  const [currentRow, setCurrentRow] = useState(1);
   const [isPlaying, setIsPlaying] = useState(true);
   const [showEndScreen, setShowEndScreen] = useState(false);
+  const { wordles, submitWordle, currentRow, resetWordle, word } = useWordle({
+    wordlist: wordlist,
+  });
+
+  const handleSubmit = () => {
+    if (input.length !== 6 || !wordlist.includes(input.toLowerCase())) return;
+    submitWordle(input);
+    setInput("");
+  };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (/^[a-zA-Z]{1}$/.test(e.key)) {
@@ -131,26 +57,9 @@ const App: React.FC = () => {
     }
   };
 
-  const handleSubmit = () => {
-    if (input.length !== 6 || !wordlist.includes(input.toLowerCase())) return;
-
-    setWordles((currWordles) => {
-      const newWordles = [...currWordles];
-      newWordles[currentRow - 1] = formatWordle(input, word);
-      return newWordles;
-    });
-    setCurrentRow((currRow) => currRow + 1);
-    setInput("");
-  };
-
   const handleNewGame = () => {
-    console.log("here");
-    setWord(
-      wordlist[Math.floor(Math.random() * wordlist.length)].toUpperCase()
-    );
-    setWordles(defaultWordles);
+    resetWordle();
     setInput("");
-    setCurrentRow(1);
     setShowEndScreen(false);
     setIsPlaying(true);
   };

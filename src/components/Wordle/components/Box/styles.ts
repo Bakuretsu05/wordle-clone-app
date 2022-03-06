@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ColorType } from "../../../../App";
+import { ColorType } from "../../../../hooks/useWordle";
 
 export const StyledBox = styled.div<{ color: ColorType }>`
   padding: 1rem;

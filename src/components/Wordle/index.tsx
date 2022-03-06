@@ -1,6 +1,6 @@
 import React from "react";
 import { StyledWordle } from "./styles";
-import { WordleType } from "../../App";
+import { WordleType } from "../../hooks/useWordle";
 import Row from "./components/Row";
 
 interface PropsType {
