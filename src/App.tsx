@@ -1,12 +1,18 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { Button as StyledButton } from "./components/EndScreen/styles";
 import wordlist from "./wordlist";
+import { KeysType } from "./components/Keyboard/types";
+
+// styles
 import { ThemeProvider } from "styled-components";
 import { Container, GlobalStyles, defaultTheme } from "./globalStyles";
+
+// components
+import { Button as StyledButton } from "./components/EndScreen/styles";
 import Wordle from "./components/Wordle";
 import EndScreen from "./components/EndScreen";
 import Keyboard from "./components/Keyboard";
-import { KeysType } from "./components/Keyboard/types";
+
+// hooks
 import useWordle from "./hooks/useWordle";
 import useInput from "./hooks/useInput";
 
@@ -54,7 +60,25 @@ const App: React.FC = () => {
     [handleSubmit, inputAdd, inputBackspace]
   );
 
-  const handleShare = () => {};
+  const handleShare = () => {
+    const getRowEmotes = (row: number) => {
+      let emotes = "";
+      wordles[row].forEach(({ color }) => {
+        emotes += color === "green" ? "🟩" : color === "yellow" ? "🟨" : "⬛";
+      });
+      return emotes;
+    };
+    const getSquaresEmote = () => {
+      let emotes = "";
+      wordles.forEach((wordle, index) => {
+        emotes += `${getRowEmotes(index)}\n`;
+      });
+      return emotes;
+    };
+    navigator.clipboard.writeText(
+      `Bakurdle :D  ${currentRow - 1}/6\n${getSquaresEmote()}`
+    );
+  };
 
   useEffect(() => {
     appRef.current && appRef.current.focus();
