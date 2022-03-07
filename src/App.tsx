@@ -26,30 +26,25 @@ const App: React.FC = () => {
     inputDelete();
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (/^[a-zA-Z]{1}$/.test(e.key)) inputAdd(e.key);
-    else if (e.key === "Enter") handleSubmit();
+  const handleNewGame = () => {
+    resetWordle();
+    inputDelete();
+    setShowEndScreen(false);
+    setIsPlaying(true);
   };
 
-  const handleDelete = (
-    e: React.KeyboardEvent<HTMLDivElement> | "DISPATCH"
-  ) => {
-    if (typeof e === "object" && !(e.key === "Backspace")) return;
-    else if (typeof e !== "object" && !(e === "DISPATCH")) return;
-    inputBackspace();
+  const handleInput = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.nativeEvent.type === "keypress" && /^[a-zA-Z]{1}$/.test(e.key))
+      inputAdd(e.key);
+    else if (e.nativeEvent.type === "keypress" && e.key === "Enter")
+      handleSubmit();
+    else if (e.key === "Backspace") inputBackspace();
   };
 
   const handleKeyboard = (value: KeysType) => {
     if (value === "ENTER") handleSubmit();
     else if (value === "BACKSPACE") inputBackspace();
     else inputAdd(value);
-  };
-
-  const handleNewGame = () => {
-    resetWordle();
-    inputDelete();
-    setShowEndScreen(false);
-    setIsPlaying(true);
   };
 
   const handleShare = () => {};
@@ -87,8 +82,8 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container
-        onKeyPress={isPlaying ? handleKeyPress : undefined}
-        onKeyDown={handleDelete}
+        onKeyPress={isPlaying ? handleInput : undefined}
+        onKeyDown={handleInput}
         tabIndex={0}
       >
         <GlobalStyles />
