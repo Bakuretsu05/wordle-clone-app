@@ -13,11 +13,14 @@ export const Container = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: ${({ theme }) => theme.bgColor};
-  display: flex;
-  gap: 3rem;
-  flex-direction: column;
-  justify-content: center;
+  display: grid;
+  grid-template-rows: 1fr min-content;
+  justify-items: center;
   align-items: center;
+`;
+
+export const Screen = styled.div`
+  width: 100%;
 `;
 
 export const defaultTheme = {
@@ -28,7 +31,7 @@ export const defaultTheme = {
   color: {
     primary: "#3A3A3C",
     lighterPrimary: "#1A1A1B",
-    secondary: "#3A3A3C",
+    secondary: "#818384",
   },
   wordle: {
     color: {

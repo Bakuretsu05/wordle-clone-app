@@ -54,7 +54,7 @@ const App: React.FC = () => {
   const handleKeyboard = useCallback(
     (value: KeysType) => {
       if (value === "ENTER") handleSubmit();
-      else if (value === "BACKSPACE") inputBackspace();
+      else if (value === "<--") inputBackspace();
       else inputAdd(value);
     },
     [handleSubmit, inputAdd, inputBackspace]
@@ -116,13 +116,13 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      <GlobalStyles />
       <Container
         onKeyPress={isPlaying ? handleInput : undefined}
         onKeyDown={handleInput}
         tabIndex={0}
         ref={appRef}
       >
-        <GlobalStyles />
         <Wordle wordles={wordles} currentRow={currentRow} input={input} />
         {showEndScreen ? (
           <EndScreen

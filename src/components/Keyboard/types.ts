@@ -1,6 +1,6 @@
 export type KeysType =
   | "ENTER"
-  | "BACKSPACE"
+  | "<--" // backspace
   | "A"
   | "B"
   | "C"

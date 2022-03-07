@@ -31,7 +31,7 @@ const Keys: KeysType[] = [
   "B",
   "N",
   "M",
-  "BACKSPACE",
+  "<--",
 ];
 
 interface PropsType {
