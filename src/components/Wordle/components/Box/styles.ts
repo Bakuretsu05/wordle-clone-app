@@ -8,7 +8,8 @@ export const StyledBox = styled.div<{ color: ColorType }>`
   font-weight: 700;
   font-size: 2.2rem;
   color: ${({ theme }) => theme.textColor.primary};
-  border: 2px solid ${({ theme }) => theme.color.primary};
+  border: 2px solid
+    ${(props) => (props.color === "none" ? props.theme.color.primary : "none")};
   background-color: ${(props) =>
     props.color !== "none" ? props.theme.wordle.color[props.color] : "none"};
   display: flex;

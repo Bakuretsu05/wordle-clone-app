@@ -5,4 +5,5 @@ export const Keyboard = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 0.4rem;
+  padding: 0.5rem;
 `;
