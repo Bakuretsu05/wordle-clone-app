@@ -9,11 +9,24 @@ interface PropsType {
   handlePress: (KeyValue: KeysType) => void;
 }
 
-const KeyRow: React.FC<PropsType> = ({ keyList, handlePress }) => {
+const KeyRow: React.FC<PropsType> = ({
+  keyList,
+  handlePress,
+  letterProfile,
+}) => {
   return (
     <S.KeyRow>
       {keyList.map((key) => (
-        <KeyButton handlePress={handlePress} value={key} key={key} />
+        <KeyButton
+          handlePress={handlePress}
+          value={key}
+          key={key}
+          color={
+            /^[A-Z]{1}$/.test(key.toUpperCase())
+              ? letterProfile[key.toUpperCase() as keyof typeof letterProfile]
+              : "none"
+          }
+        />
       ))}
     </S.KeyRow>
   );

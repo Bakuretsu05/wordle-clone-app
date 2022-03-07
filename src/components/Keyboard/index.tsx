@@ -78,10 +78,22 @@ const Keyboard: React.FC<PropsType> = ({
   useEffect(() => {
     if (currentRow < 2) return;
     wordles[currentRow - 2].forEach((wordle) => {
-      setLetterProfile((currLetterProfile) => ({
-        ...currLetterProfile,
-        [wordle.letter.toUpperCase()]: wordle.color,
-      }));
+      setLetterProfile((currLetterProfile) => {
+        if (
+          currLetterProfile[
+            wordle.letter.toUpperCase() as keyof typeof currLetterProfile
+          ] === "green" ||
+          (currLetterProfile[
+            wordle.letter.toUpperCase() as keyof typeof currLetterProfile
+          ] === "yellow" &&
+            wordle.color === "gray")
+        )
+          return currLetterProfile;
+        return {
+          ...currLetterProfile,
+          [wordle.letter.toUpperCase()]: wordle.color,
+        };
+      });
     });
   }, [wordles, currentRow]);
 
