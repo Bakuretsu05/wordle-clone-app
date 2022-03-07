@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useCallback, useReducer } from "react";
 
 const reducer = (
   state: string,
@@ -20,9 +20,12 @@ const reducer = (
 const useInput = () => {
   const [input, dispatch] = useReducer(reducer, "");
 
-  const inputBackspace = () => dispatch({ type: "BACKSPACE" });
-  const inputAdd = (char: string) => dispatch({ type: "ADD", payload: char });
-  const inputDelete = () => dispatch({ type: "DELETE" });
+  const inputBackspace = useCallback(() => dispatch({ type: "BACKSPACE" }), []);
+  const inputAdd = useCallback(
+    (char: string) => dispatch({ type: "ADD", payload: char }),
+    []
+  );
+  const inputDelete = useCallback(() => dispatch({ type: "DELETE" }), []);
 
   return { inputBackspace, inputAdd, inputDelete, input };
 };

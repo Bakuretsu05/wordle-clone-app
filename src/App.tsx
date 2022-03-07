@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Button as StyledButton } from "./components/EndScreen/styles";
 import wordlist from "./wordlist";
 import { ThemeProvider } from "styled-components";
@@ -21,32 +21,38 @@ const App: React.FC = () => {
     wordlist: wordlist,
   });
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     if (input.length !== 6 || !wordlist.includes(input.toLowerCase())) return;
     submitWordle(input);
     inputDelete();
-  };
+  }, [input, submitWordle, inputDelete]);
 
-  const handleNewGame = () => {
+  const handleNewGame = useCallback(() => {
     resetWordle();
     inputDelete();
     setShowEndScreen(false);
     setIsPlaying(true);
-  };
+  }, [resetWordle, inputDelete]);
 
-  const handleInput = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.nativeEvent.type === "keypress" && /^[a-zA-Z]{1}$/.test(e.key))
-      inputAdd(e.key);
-    else if (e.nativeEvent.type === "keypress" && e.key === "Enter")
-      handleSubmit();
-    else if (e.key === "Backspace") inputBackspace();
-  };
+  const handleInput = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.nativeEvent.type === "keypress" && /^[a-zA-Z]{1}$/.test(e.key))
+        inputAdd(e.key);
+      else if (e.nativeEvent.type === "keypress" && e.key === "Enter")
+        handleSubmit();
+      else if (e.key === "Backspace") inputBackspace();
+    },
+    [handleSubmit, inputAdd, inputBackspace]
+  );
 
-  const handleKeyboard = (value: KeysType) => {
-    if (value === "ENTER") handleSubmit();
-    else if (value === "BACKSPACE") inputBackspace();
-    else inputAdd(value);
-  };
+  const handleKeyboard = useCallback(
+    (value: KeysType) => {
+      if (value === "ENTER") handleSubmit();
+      else if (value === "BACKSPACE") inputBackspace();
+      else inputAdd(value);
+    },
+    [handleSubmit, inputAdd, inputBackspace]
+  );
 
   const handleShare = () => {};
 
