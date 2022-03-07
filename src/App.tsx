@@ -76,7 +76,7 @@ const App: React.FC = () => {
       return emotes;
     };
     navigator.clipboard.writeText(
-      `Bakurdle :D  ${currentRow - 1}/6\n${getSquaresEmote()}`
+      `Bakurdle :D  ${currentRow - 1}/6\n\n${getSquaresEmote()}`
     );
   };
 
@@ -136,7 +136,11 @@ const App: React.FC = () => {
             handleShare={handleShare}
           />
         ) : isPlaying ? (
-          <Keyboard handlePress={handleKeyboard} />
+          <Keyboard
+            handlePress={handleKeyboard}
+            wordles={wordles}
+            currentRow={currentRow}
+          />
         ) : (
           <StyledButton onClick={() => setShowEndScreen(true)}>
             Show End Screen

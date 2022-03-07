@@ -1,10 +1,11 @@
 import React from "react";
 import * as S from "./styles";
-import { KeysType } from "../../types";
+import { KeysType, StateType } from "../../types";
 import KeyButton from "../KeyButton";
 
 interface PropsType {
   keyList: KeysType[];
+  letterProfile: StateType;
   handlePress: (KeyValue: KeysType) => void;
 }
 
