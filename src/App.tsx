@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button as StyledButton } from "./components/EndScreen/styles";
 import wordlist from "./wordlist";
 import { ThemeProvider } from "styled-components";
@@ -13,6 +13,7 @@ import useInput from "./hooks/useInput";
 export const LS_KEY = "bakurdleStats";
 
 const App: React.FC = () => {
+  const appRef: React.RefObject<HTMLDivElement> = useRef(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [showEndScreen, setShowEndScreen] = useState(false);
   const { inputAdd, inputBackspace, inputDelete, input } = useInput();
@@ -50,6 +51,10 @@ const App: React.FC = () => {
   const handleShare = () => {};
 
   useEffect(() => {
+    appRef.current && appRef.current.focus();
+  });
+
+  useEffect(() => {
     if (currentRow > 6) setIsPlaying(false);
     if (
       currentRow > 1 &&
@@ -85,6 +90,7 @@ const App: React.FC = () => {
         onKeyPress={isPlaying ? handleInput : undefined}
         onKeyDown={handleInput}
         tabIndex={0}
+        ref={appRef}
       >
         <GlobalStyles />
         <Wordle wordles={wordles} currentRow={currentRow} input={input} />
